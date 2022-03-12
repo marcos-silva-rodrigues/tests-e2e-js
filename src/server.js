@@ -23,6 +23,7 @@ async function handler(request, response) {
   }
 
   if (method === "DELETE") {
+    Database.clear();
     return responseJSON({ ok: 1 }, response);
   }
 }
