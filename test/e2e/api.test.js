@@ -3,19 +3,16 @@ import {
   expect,
   test,
   describe,
+  beforeEach
 } from '@jest/globals';
 import superTest from 'supertest';
 import Server from '../../src/server.js';
 
 describe('API E2E Test Suite', () => {
   
-  test('GET / - should return array', async () => {
-    const response = await superTest(Server)
-    .get('/');
-    
-    const data = JSON.parse(response.text);
-    expect(data).toBeInstanceOf(Array);
-    expect(data.length).toEqual(0);
+  beforeEach(async () => {
+    await superTest(Server)
+      .delete('/');
   });
 
   test('POST / - should save an item and return ok', async () => {
@@ -29,6 +26,16 @@ describe('API E2E Test Suite', () => {
     const expectedResponse = { ok: 1 };
     expect(JSON.parse(response.text)).toStrictEqual(expectedResponse);
   }); 
+  
+  test('GET / - should return array', async () => {
+    const response = await superTest(Server)
+    .get('/');
+    
+    const data = JSON.parse(response.text);
+    expect(data).toBeInstanceOf(Array);
+    expect(data.length).toEqual(0);
+  });
+
 
   test('DELETE / - should clear database', async () => {
     const response = await superTest(Server)
